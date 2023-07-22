@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import React, { useState } from "react";
+import VarosUrlap from "./Components/VarosUrlap/VarosUrlap";
+import Elorejelzes from "./Components/Elorejelzes/Elorejelzes";
 
-function App() {
+export default function App() {
+  const [idojarasInfo, setIdojarasInfo] = useState(null);
+
+  function queryWeather(varos) {
+    fetch(
+      "https://api.open-meteo.com/v1/forecast?latitude=" +
+        varos.latitude +
+        "&longitude=" +
+        varos.longitude +
+        "&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_sum,windspeed_10m_max,winddirection_10m_dominant&timezone=auto"
+    )
+      .then((x) => x.json())
+      .then((response) => {
+        setIdojarasInfo({
+          varos,
+          idojaras: response,
+        });
+      });
+  }
+
+  function updateVaros(varos) {
+    fetch("https://geocoding-api.open-meteo.com/v1/search?name=" + varos)
+      .then((x) => x.json())
+      .then((response) => {
+        if (Array.isArray(response.results) && response.results.length > 0) {
+          queryWeather(response.results[0]);
+        } else {
+          alert("Hibás város");
+        }
+      });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Időjárás előrejelzés</h1>
+      <VarosUrlap updateVaros={updateVaros} />
+      <Elorejelzes idojarasInfo={idojarasInfo} />
     </div>
   );
 }
-
-export default App;
