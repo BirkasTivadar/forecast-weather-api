@@ -1,5 +1,4 @@
-
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import React, { useState } from "react";
 import VarosUrlap from "./Components/VarosUrlap/VarosUrlap";

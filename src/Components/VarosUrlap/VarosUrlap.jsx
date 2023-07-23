@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 
-export default function VarosUrlap({updateVaros}) {
+export default function VarosUrlap({ updateVaros }) {
   const [varos, setVaros] = useState("");
 
   const handleSubmit = (event) => {
@@ -9,21 +10,23 @@ export default function VarosUrlap({updateVaros}) {
   };
 
   const handleVarosChange = (event) => {
-    setVaros(event.target.value)
-  }
+    setVaros(event.target.value);
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Város:
-        <input
+    <Form onSubmit={handleSubmit} className="m-5">
+      <FormGroup>
+        <Label for="varosInput">Város</Label>
+        <Input
           type="text"
           name="varos"
+          id="varosInput"
+          placeholder="Város"
           value={varos}
           onChange={handleVarosChange}
         />
-      </label>
-      <button type="submit">Lekérdez</button>
-    </form>
+      </FormGroup>
+      <Button type="submit">Lekérdez</Button>
+    </Form>
   );
 }
